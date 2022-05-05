@@ -4,13 +4,13 @@ from django.contrib.auth import login
 from django.contrib import messages 
 
 def register_request(request):
-    if request.method == "post":
+    if request.method == "POST":
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request,user)
             messages.success(request,"El registro fue exitoso.")
-            return redirect("main:homepage")
+            return redirect("split:homepage")
         messages.error(request,"No se pudo registrar, inserte informacion valida")
     form=NewUserForm()
     return render (request=request, template_name="split/register.html", context={"register_form":form})

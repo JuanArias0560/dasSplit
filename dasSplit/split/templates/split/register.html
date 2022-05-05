@@ -1,15 +1,21 @@
+<head>
+    <title>Registro</title>
+</head>
+
 {% extends 'split/home.html' %}
 
 {% block content %}
 
+{% load crispy_forms_tags %}
+
 <div class="container py-5">
     <h1>Registrate</h1>
-    <form method="post">
+    <form method="POST">
         {% csrf_token %}
-        {{register_form}}
+        {{register_form|crispy }}
         <button class="btn btn-primary" type="submit">Registrate</button>
     </form>
-    <p class="tect-center">¿Ya tienes cuenta?<a href="/login">Inicia sesión aquí</a></p>
+    <p class="text-center">¿Ya tienes cuenta?<a href="/login">Inicia sesión aquí</a></p>
 </div>
 
 {% endblock%}
