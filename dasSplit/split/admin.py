@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Pagos,Cuentas
 
-# Register your models here.
+admin.site.register(Pagos)
+admin.site.register(Cuentas)
