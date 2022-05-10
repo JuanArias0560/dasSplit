@@ -1,8 +1,10 @@
-from django.shortcuts import render,redirect
-from .forms import NewUserForm
+from django.shortcuts import get_object_or_404, render,redirect
+from .forms import CuentasForm, NewUserForm
 from django.contrib.auth import login,authenticate,logout
 from django.contrib import messages 
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
+
 
 def register_request(request):
 
@@ -46,3 +48,18 @@ def logout_request(request):
 
 def homepage(request):
     return render(request,'split/home.html')
+
+
+def cuentas(request):
+    if request.method == 'POST':
+        form = CuentasForm(request.POST)
+        if form.is_valid():
+            cuentas=form.save(commit=False)
+            cuentas.save()
+            cuentas.colaboradores.set([request.user.pk])
+            messages.success(request,'Cuenta Creada')
+            return redirect('split:homepage')
+    else:        
+        form=CuentasForm()
+    return render(request,'split/cuentas.html', {'form':form})    
+

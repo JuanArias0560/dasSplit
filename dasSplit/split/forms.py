@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
+from .models import Cuentas
+
 class NewUserForm(UserCreationForm):
     """Pre.built model user"""
     email = forms.EmailField(required=True)
@@ -19,3 +21,10 @@ class NewUserForm(UserCreationForm):
             user.save()
         return user
 
+
+class CuentasForm(forms.ModelForm):
+    name=forms.CharField(required=True,label='Nombre de la cuenta',)
+
+    class Meta:
+        model = Cuentas
+        fields= ['name']
