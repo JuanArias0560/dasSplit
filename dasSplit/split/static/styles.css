@@ -1,4 +1,47 @@
-body{
-    background: -webkit-linear-gradient(to left,#B2EBF2,#E0F7FA);
+/*  background: -webkit-linear-gradient(to left,#B2EBF2,#80CBC4);
     background: linear-gradient(to left,#B2EBF2,#80CBC4 );
+*/
+
+body{
+
+  background-image: url("assets/fondo.svg");
+  background-size: cover;
+  width:100%;
+  overflow-x:hidden;
+  
+}
+
+.btn-outline-success{
+    
+  color: white !important;
+  border-color: #4bd6b8 !important;
+
+}
+.btn-outline-success:hover,
+.btn-outline-success:active,
+.btn-outline-success:visited,
+.btn-outline-success:focus {
+
+  background-color: #4bd6b8 !important;
+  border-color: #4bd6b8 !important;
+
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+
+  background-color: #4bd6b8 !important;
+  border-color: #4bd6b8 !important
+
+}
+
+.navbar-nav .active{
+   color: #4bd6b8 !important;
+} 
+
+.nav-item > a:hover {
+    color: #4bd6b8 !important;
 }

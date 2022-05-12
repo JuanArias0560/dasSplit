@@ -1,19 +1,20 @@
+<head>
+    <title>Cuentas</title>
+</head>
 {% extends 'split/home.html' %}
 
 {% block content %}
+
 {% load crispy_forms_tags %}
 
+    <div class="container py-5">
+        <h1>Nueva Cuenta</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{form|crispy}}
 
-<div class="container py-5">
-    <h1>Nueva Cuenta</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{form|crispy}}
-        
-        <button class="btn btn-primary" type="submit">Crear</button>
-    </form>
-</div>
-
-
+            <button class="btn btn-primary" type="submit">Crear</button>
+        </form>
+    </div>
 
 {% endblock  %}
