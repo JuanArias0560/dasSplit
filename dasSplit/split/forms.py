@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Cuentas
+from .models import Pocket,Charge,Payment
 
 class NewUserForm(UserCreationForm):
     """built-in model user"""
@@ -12,8 +12,8 @@ class NewUserForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         
       super().__init__(*args, **kwargs)
-      self.fields['password1'].help_text='Ingresa una clave de por lo menos 8 digitos'
-      self.fields['password2'].help_text='Ingresa la misma clave escrita anteriormente, para verificar'
+      self.fields['password1'].help_text='Enter the password with at least 8 digits'
+      self.fields['password2'].help_text='Enter the same password, to verify'
 
 
     class Meta:
@@ -38,10 +38,19 @@ class NewUserForm(UserCreationForm):
         return user
 
 
-class CuentasForm(forms.ModelForm):
+class PocketForm(forms.ModelForm):
 
-    name=forms.CharField(required=True,label='Nombre de la cuenta',)
+    name=forms.CharField(required=True,label='Name of Pocket',)
 
     class Meta:
-        model = Cuentas
+        model = Pocket
         fields= ['name']
+
+class PaymentForm(forms.ModelForm):
+
+    value=forms.IntegerField(required=True,label='Value of payment',)
+
+    class Meta:
+        model = Payment
+        fields= ['value']
+        

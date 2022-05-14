@@ -1,5 +1,5 @@
 <head>
-    <title>Registro</title>
+    <title>Register</title>
 </head>
 
 {% extends 'split/home.html' %}
@@ -14,18 +14,18 @@
         <div class="card" style="width: 32rem; border-radius: 15px;">
             <div class="card-body">
                 <br>
-                <h1 class="card-title" style="text-align:center ; color:#3cac94" ><img src={% static 'assets/logo_only.png' %} width="60" height="60" class="d-inline-block align-center" alt=""> Registrate</h1>
+                <h1 class="card-title" style="text-align:center ; color:#3cac94" ><img src={% static 'assets/logo_only.png' %} width="60" height="60" class="d-inline-block align-center" alt=""> Sign up!</h1>
                 <br><h7><form method="POST">
                     {% csrf_token %}
                     {{register_form|crispy}}
                     <br>
                     <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="submit">Registrate</button>
+                    <button class="btn btn-primary" type="submit">Join us!</button>
                     </div>
                 </form> 
                 </h7>  
                 <br>
-                <p class="text-center">¿Ya tienes cuenta?, <a href="/login">Inicia sesión aquí</a></p>
+                <p class="text-center">You have an account?, <a href="/login">Login here</a></p>
             </div>
         </div>
     </div>

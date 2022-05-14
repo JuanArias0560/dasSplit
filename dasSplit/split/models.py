@@ -1,4 +1,3 @@
-from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -13,26 +12,39 @@ class Profile(models.Model):
         return f'Perfil de {self.user.username}'
 
 
-class Cuentas(models.Model):
+class Pocket(models.Model):
 
     name=models.CharField(max_length=30)    
-    colaboradores=models.ManyToManyField(User)
-    fecha_de_creado=models.DateField(default=timezone.now)
+    user=models.ManyToManyField(User,related_name="pocket")
+    date=models.DateField(default=timezone.now)
 
-    def __str__(self) -> str:
-        # return '-'.join([str(colaboradores.username) for colaboradores in self.colaboradores.all()])
+    def __str__(self) -> str:        
         return self.name
 
 
-class Pagos(models.Model):
+class Payment(models.Model):
+
+    
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,related_name="payment")
+    pocket=models.ForeignKey(Pocket,on_delete=models.CASCADE,null=True)
+    value=models.IntegerField()
+
+    def __str__(self) -> str:
+        return 'payment'
+
+class Charge(models.Model):
 
     name=models.CharField(max_length=30)
-    creador=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
-    cuentas=models.ForeignKey(Cuentas,on_delete=models.CASCADE,null=True)
-    valor=models.IntegerField()
+    value=models.IntegerField()    
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,related_name="charge")
+    pocket=models.ForeignKey(Pocket,on_delete=models.CASCADE,null=True)
 
     def __str__(self) -> str:
         return self.name
+
+
+
+
 
 
 

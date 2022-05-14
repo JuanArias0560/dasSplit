@@ -44,10 +44,10 @@
                     {% if user.is_authenticated %}
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Bienvenido, {{user.username}}</a>
+                        <a class="nav-link active" href="#">Welcome, {{user.username.capitalize}}</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link "  href="#">Mi Perfil</a>
+                    <a class="nav-link "  href="#">My profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="/logout/">Logout</a>

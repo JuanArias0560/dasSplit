@@ -17,12 +17,12 @@
                 <div class="container">
                     <div class="card w75" style="width: 55rem;">
                         <div class="card-header">
-                            <h4>Cuentas</h4>
+                            <h4>Pockets</h4>
                         </div>
                         <div class="card-body">
                                 <blockquote class="blockquote mb-0">
-                                    <p>Aun no tienes cuentas creadas.</p>
-                                    <footer class="blockquote-footer">Autores:<cite title="Source Title">{{user.username}}</cite></footer>
+                                    <p>You dont have a registered pockets .</p>
+                                    <footer class="blockquote-footer">Owners: <cite title="Source Title">{{user.username.capitalize}}</cite></footer>
                                 </blockquote>
                         </div>
                     </div>
@@ -39,22 +39,22 @@
                                 <div class="mt-3 mb-4">
                                     <img src="{{user.profile.image.url}}" class="rounded-circle img-fluid" style="width: 100px;" />
                                 </div>
-                                <h4 class="mb-2">{{user.username}}</h4>
+                                <h4 class="mb-2">{{user.username.capitalize}}</h4>
                                 <p class="text-muted mb-4">@Programmer <span class="mx-2">|</span> <a href="#!">{{user.email}}</a></p>
                                 
                                 
                                 <div class="d-flex justify-content-between text-center mt-5 mb-2">
                                     <div>
-                                        <p class="mb-2 h5">8471</p>
-                                        <p class="text-muted mb-0">Cuentas</p>
+                                        <p class="mb-2 h5">{{user.pocket.count}}</p>
+                                        <p class="text-muted mb-0">Pockets</p>
                                     </div>
                                     <div class="px-3">
                                         <p class="mb-2 h5">8512</p>
-                                        <p class="text-muted mb-0">Amigos</p>
+                                        <p class="text-muted mb-0">Friends</p>
                                     </div>
                                     <div>
-                                        <p class="mb-2 h5">4751</p>
-                                        <p class="text-muted mb-0">Total gastado</p>
+                                        <p class="mb-2 h5">{{user.payment.count}}</p>
+                                        <p class="text-muted mb-0">Payments</p>
                                     </div>
                                 </div>
                             </div>
