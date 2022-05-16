@@ -52,5 +52,6 @@ class PaymentForm(forms.ModelForm):
 
     class Meta:
         model = Payment
-        fields= ['value']
+        fields= ['value','pocket']
+        widgets={'pocket':forms.Select(attrs={'class':'form-control'})}
         

@@ -32,7 +32,7 @@ def register_request(request):
 def login_request(request):
 
     if request.user.is_authenticated:
-        return redirect("split:homepage")
+        return redirect("split:feed")
 
     else:
 
@@ -65,6 +65,7 @@ def homepage(request):
 
     return render(request,'split/home.html')
 
+
 def feed(request):
 
     if request.user.is_authenticated:
@@ -74,8 +75,6 @@ def feed(request):
     else:
 
         return redirect("split:homepage")
-
-
 
 
 def pocket(request):
@@ -96,6 +95,7 @@ def pocket(request):
         
     else:
         return redirect("split:homepage")
+
 
 def payment(request):
 
