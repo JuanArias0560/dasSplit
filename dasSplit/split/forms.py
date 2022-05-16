@@ -1,3 +1,4 @@
+from cProfile import label
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -44,7 +45,11 @@ class PocketForm(forms.ModelForm):
 
     class Meta:
         model = Pocket
-        fields= ['name']
+        fields= ['name','user']
+        labels= {'user':'Users'}
+        widgets={'user':forms.SelectMultiple(attrs={'class':'form-select'})}
+
+
 
 class PaymentForm(forms.ModelForm):
 
@@ -53,5 +58,16 @@ class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
         fields= ['value','pocket']
-        widgets={'pocket':forms.Select(attrs={'class':'form-control'})}
+        widgets={'pocket':forms.Select(attrs={'class':'form-select'})}
+
+
+class ChargeForm(forms.ModelForm):
+
+    name=forms.CharField(required=True,label='Name of charge',)
+    value=forms.IntegerField(required=True,label='Value of charge',)
+
+    class Meta:
+        model = Charge
+        fields= ['name','value','pocket']
+        widgets={'pocket':forms.Select(attrs={'class':'form-select'})}
         

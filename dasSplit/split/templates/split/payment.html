@@ -2,19 +2,29 @@
     <title>Payments</title>
 </head>
 {% extends 'split/home.html' %}
+{% load static %}
 
 {% block content %}
 
 {% load crispy_forms_tags %}
 
-    <div class="container py-5">
-        <h1>New Payment</h1>
-        <form method="POST">
-            {% csrf_token %}
-            {{payment_form|crispy}}
-
-            <button class="btn btn-primary" type="submit">Create</button>
-        </form>
+    <br>
+    <div class="row justify-content-md-center">
+        <div class="card" style="width: 32rem; border-radius: 15px;">
+            <div class="card-body">
+                <br>
+                <h1 class="card-title" style="text-align:center ; color:#3cac94" ><img src={% static 'assets/payments.png' %} width="60" height="60" class="d-inline-block align-center" alt=""> New payment!</h1>
+                <br><h7><form method="POST">
+                    {% csrf_token %}
+                    {{payment_form|crispy}}
+                    <br>
+                    <div class="d-grid gap-2">
+                    <button class="btn btn-primary" type="submit">Create!</button>
+                    </div>
+                </form> 
+                </h7>  
+            </div>
+        </div>
     </div>
 
 {% endblock  %}

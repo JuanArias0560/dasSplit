@@ -1,7 +1,6 @@
 from django.shortcuts import render,redirect, get_object_or_404
 
-from .models import Pocket
-from .forms import PocketForm, NewUserForm,PaymentForm
+from .forms import ChargeForm, PocketForm, NewUserForm,PaymentForm
 from django.contrib.auth import login,authenticate,logout
 from django.contrib import messages 
 from django.contrib.auth.forms import AuthenticationForm
@@ -81,12 +80,14 @@ def pocket(request):
 
     if request.user.is_authenticated:
 
-        if request.method == 'POST':
-            form = PocketForm(request.POST)
+        current_user=get_object_or_404(User,pk=request.user.pk)
+        if request.method == 'POST':            
+            form = PocketForm(request.POST)            
             if form.is_valid():
                 pockets=form.save(commit=False)
+                pockets.author = current_user                
                 pockets.save()
-                pockets.user.set([request.user.pk])
+                form.save_m2m()
                 messages.success(request,'Pocket Created')
                 return redirect('split:feed')
         else:        
@@ -116,5 +117,26 @@ def payment(request):
         
     else:
         return redirect("split:homepage")
-            
+
+
+def charge(request):
+
+    if request.user.is_authenticated:
+
+        current_user=get_object_or_404(User,pk=request.user.pk)
+        if request.method == 'POST':
+            form = ChargeForm(request.POST)
+            if form.is_valid():
+                charge=form.save(commit=False)
+                charge.user = current_user
+                charge.save()
+                messages.success(request,'Charge created')
+                return redirect('split:feed')
+        else:        
+            form=ChargeForm()
+        return render(request,'split/charge.html', {'charge_form':form}) 
+        
+    else:
+        return redirect("split:homepage")
+
 

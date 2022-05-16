@@ -1,5 +1,5 @@
 <head>
-    <title>Pockets</title>
+    <title>Charges</title>
 </head>
 {% extends 'split/home.html' %}
 {% load static %}
@@ -13,10 +13,10 @@
         <div class="card" style="width: 32rem; border-radius: 15px;">
             <div class="card-body">
                 <br>
-                <h1 class="card-title" style="text-align:center ; color:#3cac94" ><img src={% static 'assets/pocket.png' %} width="60" height="60" class="d-inline-block align-center" alt=""> New pocket!</h1>
+                <h1 class="card-title" style="text-align:center ; color:#3cac94" ><img src={% static 'assets/charges.png' %} width="60" height="60" class="d-inline-block align-center" alt=""> New charge!</h1>
                 <br><h7><form method="POST">
                     {% csrf_token %}
-                    {{pocket_form|crispy}}
+                    {{charge_form|crispy}}
                     <br>
                     <div class="d-grid gap-2">
                     <button class="btn btn-primary" type="submit">Create!</button>

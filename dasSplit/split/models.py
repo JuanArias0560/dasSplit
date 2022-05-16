@@ -14,7 +14,8 @@ class Profile(models.Model):
 
 class Pocket(models.Model):
 
-    name=models.CharField(max_length=30)    
+    name=models.CharField(max_length=30) 
+    author=models.ForeignKey(User, on_delete=models.CASCADE,null=True,related_name='author')   
     user=models.ManyToManyField(User,related_name="pocket")
     date=models.DateField(default=timezone.now)
 
