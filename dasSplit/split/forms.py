@@ -1,4 +1,3 @@
-from cProfile import label
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -45,9 +44,11 @@ class PocketForm(forms.ModelForm):
 
     class Meta:
         model = Pocket
-        fields= ['name','user']
-        labels= {'user':'Users'}
-        widgets={'user':forms.SelectMultiple(attrs={'class':'form-select'})}
+        fields= ['name','user','categories']
+        labels= {
+            'user':'Users',
+            'categories':'Category'}
+        widgets={'user':forms.SelectMultiple(attrs={'class':'form-select'}),'categories':forms.Select(attrs={'class':'form-select'})}
 
 
 

@@ -45,3 +45,11 @@ body{
 .nav-item > a:hover {
     color: #4bd6b8 !important;
 }
+
+*::-webkit-scrollbar {
+  display: none !important;
+}
+
+
+  
+

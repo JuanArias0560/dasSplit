@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect, get_object_or_404
-
+from .models import *
 from .forms import ChargeForm, PocketForm, NewUserForm,PaymentForm
 from django.contrib.auth import login,authenticate,logout
 from django.contrib import messages 
@@ -69,7 +69,8 @@ def feed(request):
 
     if request.user.is_authenticated:
 
-        return render(request,'split/feed.html')
+        pockets=Pocket.objects.all()
+        return render(request,'split/feed.html',{'pockets':pockets})
     
     else:
 
