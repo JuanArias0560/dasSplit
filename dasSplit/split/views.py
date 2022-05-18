@@ -1,10 +1,12 @@
+
 from django.shortcuts import render,redirect, get_object_or_404
 from .models import *
 from .forms import ChargeForm, PocketForm, NewUserForm,PaymentForm
 from django.contrib.auth import login,authenticate,logout
-from django.contrib import messages 
+from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from django.db.models import Sum
 
 
 
@@ -69,7 +71,7 @@ def feed(request):
 
     if request.user.is_authenticated:
 
-        pockets=Pocket.objects.all()
+        pockets=Pocket.objects.filter(user__in=[request.user.pk])
         return render(request,'split/feed.html',{'pockets':pockets})
     
     else:
@@ -139,5 +141,41 @@ def charge(request):
         
     else:
         return redirect("split:homepage")
+
+
+def show_pocket(request,pocket_id):
+
+    if request.user.is_authenticated:
+
+        pockets = Pocket.objects.get(pk=pocket_id)
+        charges= Charge.objects.filter(pocket_id=pocket_id)
+        payments= Payment.objects.filter(pocket_id=pocket_id)
+
+        total_payments=Payment.objects.aggregate(Sum('value'))
+        total_payments=total_payments["value__sum"]
+        total_charges=Charge.objects.aggregate(Sum('value'))
+        total_charges=total_charges["value__sum"]
+        total=total_charges-total_payments
+        
+
+        context={
+
+            'pockets':pockets,
+            'charges':charges,
+            'payments':payments,
+            'total_payments':total_payments,
+            'total_charges':total_charges,
+            'total':total,
+
+        }  
+        return render(request,'split/show_pocket.html',context)
+    
+    else:
+
+        return redirect("split:homepage")
+
+    
+    
+
 
 

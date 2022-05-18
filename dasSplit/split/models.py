@@ -22,7 +22,7 @@ class Pocket(models.Model):
         ('other','other'),
         )
 
-    name=models.CharField(max_length=30) 
+    name=models.CharField(max_length=15) 
     author=models.ForeignKey(User, on_delete=models.CASCADE,null=True,related_name='author')   
     user=models.ManyToManyField(User,related_name="pocket")
     categories=models.CharField(max_length=255,choices=CATEGORIES,null=True)
@@ -39,7 +39,7 @@ class Payment(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,related_name="payment")
     pocket=models.ForeignKey(Pocket,on_delete=models.CASCADE,null=True)
     value=models.IntegerField()
-    date=models.DateField(default=timezone.now)
+    date=models.DateTimeField(default=timezone.now)
 
     def __str__(self) -> str:
         return 'payment'
@@ -50,7 +50,7 @@ class Charge(models.Model):
     value=models.IntegerField()    
     user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,related_name="charge")
     pocket=models.ForeignKey(Pocket,on_delete=models.CASCADE,null=True)
-    date=models.DateField(default=timezone.now)
+    date=models.DateTimeField(default=timezone.now)
 
     def __str__(self) -> str:
         return self.name

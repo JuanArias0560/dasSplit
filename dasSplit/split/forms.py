@@ -40,7 +40,7 @@ class NewUserForm(UserCreationForm):
 
 class PocketForm(forms.ModelForm):
 
-    name=forms.CharField(required=True,label='Name of Pocket',)
+    name=forms.CharField(max_length=15,required=True,label='Name of Pocket',)
 
     class Meta:
         model = Pocket
@@ -64,7 +64,7 @@ class PaymentForm(forms.ModelForm):
 
 class ChargeForm(forms.ModelForm):
 
-    name=forms.CharField(required=True,label='Name of charge',)
+    name=forms.CharField(max_length=15,required=True,label='Name of charge',)
     value=forms.IntegerField(required=True,label='Value of charge',)
 
     class Meta:

@@ -27,26 +27,30 @@
                             
                                 {% for pocket in pockets %}
 
-                                
-                                <div class="col-xl-4 col-sm-6 col-12 mt-2"> 
-                                    <div class="card">
-                                        <div class="card-content">
-                                            <div class="card-body">   
-                                                <div class="d-flex align-items-center">
+                                    <div class="col-xl-4 col-sm-6 col-12 mt-2"> 
+                                        <a href="{% url 'split:show-pocket' pocket.id %}" style="text-decoration:none ; color:#103830" >
+                                            <div class="card" style="border-radius: 15px;">
+                                                <div class="card-content">
+                                                    <div class="card-body">   
+                                                        <div class="d-flex align-items-center">
 
-                                                    <div class="flex-shrink-0">
-                                                        <img  src={% static 'assets/'|add:pocket.categories|add:'.png' %} width="60" height="60" class="d-inline-block align-left" alt="">                                     
-                                                    </div>                                                    
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <h3 class="card-title text-center">{{pocket.name.capitalize}}</h3>  
-                                                        <h6 class="text-end"><small class="text-muted">{{pocket.date|naturaltime}}</small></h6>
+                                                            <div class="flex-shrink-0">
+
+                                                                <img  src={% static 'assets/'|add:pocket.categories|add:'.png' %} width="60" height="60" class="d-inline-block align-left" alt="">
+                                                                                                     
+                                                            </div>                                                    
+                                                            <div class="flex-grow-1 ms-3">
+                                                                <h3 class="card-title text-center">{{pocket.name.capitalize}}</h3>  
+                                                                <h6 class="text-end"><small class="text-muted">{{pocket.date|naturaltime}}</small></h6>
+                                                            </div>
+
+                                                        </div>
                                                     </div>
-                                                    
                                                 </div>
                                             </div>
-                                        </div>
-                                     </div>
-                                </div>
+                                        </a>
+                                    </div>
+                                
                                 
                                               
                         
