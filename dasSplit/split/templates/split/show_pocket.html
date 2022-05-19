@@ -30,15 +30,16 @@
                             <div class="row justify-content-between">
                                 <div class="col-6">
 
-                                    <table class="table">
-                                        <h5 class="card-title text-center">Charges</h5>
+                                    <table class="table table-striped  table-hover">
+                                        <h5 class="card-title text-center"><strong>Charges</strong>&nbsp;&nbsp;<a href="{% url 'split:charge' %}" style="text-decoration:none ; color:#103830" ><button type="button" class="btn btn-primary btn-sm" style="border-radius: 10px;">New Charge</button></a></h5>
                                         <thead>
-                                            <tr class="table-info">
+                                            <tr class="table-info" style="background:#4bd6b8" >
                                                 <th scope="col">#</th>
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Value</th>
-                                                <th scope="col">Author</th>
+                                                <th scope="col">Authorities</th>
                                                 <th scope="col">Date</th>
+                                                <th scope="col"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -47,8 +48,14 @@
                                                 <th scope="row" >{{forloop.counter}}</th>
                                                 <td >{{charge.name}}</td>
                                                 <td >${{charge.value|intcomma}}</td>
-                                                <td>{{charge.user}}</td>
+                                                <td>
+                                                    {% for user in charge.user.all %}
+                                                    -{{user}}
+                                                    {% endfor %}
+                                                </td>
+                                                
                                                 <td >{{charge.date|naturalday}}</td>
+                                                <td ><a href="{% url 'split:update-charge' charge.id %}"><img src={% static 'assets/edit.png' %} width="30" height="30" class="d-inline-block align-center" alt=""></a><a href="{% url 'split:delete-charge' charge.id %}"><img src={% static 'assets/delete.png' %} width="26" height="26" class="d-inline-block align-center" alt=""></a></td>
                                             </tr>
                                             {% endfor %}                                       
 
@@ -56,39 +63,40 @@
                                     </table>                      
                                 </div>
 
-                                <div class="col-6">
+                                <div class="col-5">
 
-                                    <table class="table">
-                                        <h5 class="card-title text-center">Payments</h5>
+                                    <table class="table table-striped table-hover">
+                                        <h5 class="card-title text-center"><strong>You must pay</strong>&nbsp;&nbsp;<a href="{% url 'split:payment' %}" style="text-decoration:none ; color:#103830" ><button type="button" class="btn btn-primary btn-sm" style="border-radius: 10px;">Add payment</button></a></h5>
                                         <thead>
                                             <tr class="table-info">
                                                 <th scope="col">#</th>                                                
-                                                <th scope="col">Value</th>
-                                                <th scope="col">Author</th>
-                                                <th scope="col">Date</th>
+                                                <th scope="col">From</th>
+                                                <th scope="col">Value</th>                                                
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            {% for payment in payments %}                                        
-                                            <tr>
+                                        <tbody>                                            
+                                            
+                                            {% for key,value in final.items  %}
+                                            <tr>                                                                 
+                                                                              
                                                 <th scope="row" >{{forloop.counter}}</th>
-                                                
-                                                <td >${{payment.value|intcomma}}</td>
-                                                <td>{{payment.user}}</td>
-                                                <td >{{payment.date|naturalday}}</td>
+                                                <td>{{key}}</td>                                          
+                                                <td >${{value|intcomma}}</td>                                               
+                                                                                              
                                             </tr>
-                                            {% endfor %}
+                                            {% endfor %}                                             
                                         </tbody>
                                     </table>                      
                                 </div>
                             </div>
 
-                            <table class="table">
+                            <table class="table  table-striped table-hover">
                                 <h5 class="card-title text-center">Total</h5>
                                 <thead>
                                     <tr class="table-info">
                                         <th scope="col">#</th>
                                         <th scope="col">Total charges</th>
+                                        <th scope="col">Your part</th>
                                         <th scope="col">Total payments</th>
                                         <th scope="col">Total</th>                                        
                                     </tr>
@@ -99,18 +107,14 @@
                                         
                                         <th scope="row" >1</th>
                                         <td >${{total_charges|intcomma}}</td>
+                                        <td >${{yourpart|intcomma}}</td>
                                         <td >${{total_payments|intcomma}}</td>
-                                        <td >${{total}}</td>
+                                        <td >${{total|intcomma}}</td>
 
                                     </tr>                                    
 
                                 </tbody>
-                            </table>
-                                
-                                
-                                    
-                                                
-                                                        
+                            </table>                                                    
                         </div>
                         <div class="card-footer text-muted text-end">
                           {{pockets.date|naturaltime}}

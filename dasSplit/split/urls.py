@@ -14,5 +14,8 @@ urlpatterns = [
     path("register/",views.register_request, name="register"),
     path("login/",views.login_request, name="login"),
     path("logout/",views.logout_request, name="logout"),
-    path("show_pocket/<pocket_id>",views.show_pocket, name='show-pocket'),    
+    path("show_pocket/<pocket_id>",views.show_pocket, name='show-pocket'),  
+    path("update_charge/<charge_id>",views.update_charge, name="update-charge"),
+    path("delete_charge/<charge_id>",views.delete_charge, name="delete-charge"), 
+
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

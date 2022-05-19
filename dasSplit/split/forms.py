@@ -48,7 +48,12 @@ class PocketForm(forms.ModelForm):
         labels= {
             'user':'Users',
             'categories':'Category'}
-        widgets={'user':forms.SelectMultiple(attrs={'class':'form-select'}),'categories':forms.Select(attrs={'class':'form-select'})}
+        widgets={
+
+            'user':forms.SelectMultiple(attrs={'class':'form-select'}),
+            'categories':forms.Select(attrs={'class':'form-select'})
+
+        }
 
 
 
@@ -69,6 +74,14 @@ class ChargeForm(forms.ModelForm):
 
     class Meta:
         model = Charge
-        fields= ['name','value','pocket']
-        widgets={'pocket':forms.Select(attrs={'class':'form-select'})}
+        fields= ['name','value','user','pocket']
+        widgets={
+
+            'pocket':forms.Select(attrs={'class':'form-select'}),            
+            'user':forms.SelectMultiple(attrs={'class':'form-select'}),
+
+        }
+
+    
+
         

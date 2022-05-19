@@ -126,13 +126,13 @@ def charge(request):
 
     if request.user.is_authenticated:
 
-        current_user=get_object_or_404(User,pk=request.user.pk)
+        
         if request.method == 'POST':
             form = ChargeForm(request.POST)
             if form.is_valid():
                 charge=form.save(commit=False)
-                charge.user = current_user
                 charge.save()
+                form.save_m2m()
                 messages.success(request,'Charge created')
                 return redirect('split:feed')
         else:        
@@ -151,12 +151,40 @@ def show_pocket(request,pocket_id):
         charges= Charge.objects.filter(pocket_id=pocket_id)
         payments= Payment.objects.filter(pocket_id=pocket_id)
 
-        total_payments=Payment.objects.aggregate(Sum('value'))
-        total_payments=total_payments["value__sum"]
-        total_charges=Charge.objects.aggregate(Sum('value'))
-        total_charges=total_charges["value__sum"]
+        lista= Charge.objects.filter(pocket_id=pocket_id).filter(user__in=[request.user.pk])
+        list_value= Charge.objects.filter(pocket_id=pocket_id).filter(user__in=[request.user.pk]).values_list('value')
+        list_name=Charge.objects.filter(pocket_id=pocket_id).filter(user__in=[request.user.pk]).values_list('name')
+
+
+        list_final_value=[]
+        list_final_name=[]
+        for name in list_name:
+            for finalname in name:
+                list_final_name.append(finalname)
+
+        count_user_list=[]
+        for i in list_final_name:
+            count_user=Charge.objects.filter(name=i).values_list("user")
+            count_user_list.append(len(count_user)) 
+
+        i=0   
+        for value in list_value:
+            for finalvalue in value:
+                
+                finalvalue=(int(finalvalue))//((count_user_list[i]))
+                # print(count_user_list[i])
+                list_final_value.append(finalvalue)    
+                i=i+1
+
+        final=dict(zip(list_final_name,list_final_value))      
+
+        total_payments=Payment.objects.filter(pocket_id=pocket_id).aggregate(Sum('value'))
+        total_payments=int(0 if total_payments["value__sum"] is None else total_payments["value__sum"])
+        total_charges=Charge.objects.filter(pocket_id=pocket_id).aggregate(Sum('value'))
+        total_charges=int(0 if total_charges["value__sum"] is None else total_charges["value__sum"])
         total=total_charges-total_payments
-        
+
+        your_part=sum(final.values()) 
 
         context={
 
@@ -166,6 +194,10 @@ def show_pocket(request,pocket_id):
             'total_payments':total_payments,
             'total_charges':total_charges,
             'total':total,
+            'lista':lista,
+            'final':final,
+            'yourpart': your_part,
+            
 
         }  
         return render(request,'split/show_pocket.html',context)
@@ -174,8 +206,37 @@ def show_pocket(request,pocket_id):
 
         return redirect("split:homepage")
 
+def update_charge(request,charge_id):  
+
+    if request.user.is_authenticated:
+        
+        charges=Charge.objects.get(pk=charge_id)
+        form=ChargeForm(request.POST or None,instance=charges)
+        if form.is_valid():
+            form.save()
+            return redirect('split:feed')
+        return render(request,'split/update_charge.html',{'charge':charges,'form':form})
+    else:
+
+        return redirect("split:homepage")
     
-    
+def delete_charge(request, charge_id):
+
+    if request.user.is_authenticated:
+        
+        charges=Charge.objects.get(pk=charge_id)
+        print(charges.user)
+        if request.user in charges.user.all():
+            charges.delete()
+            messages.success(request,("Charges deleted!"))                
+            return redirect('split:feed')
+        else:
+            messages.success(request,("You aren't Autorized to delete this charge"))
+            return redirect('split:homepage')
+        
+    else:
+        return redirect("split:homepage")
+
 
 
 

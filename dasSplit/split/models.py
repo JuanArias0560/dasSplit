@@ -44,11 +44,11 @@ class Payment(models.Model):
     def __str__(self) -> str:
         return 'payment'
 
-class Charge(models.Model):
+class Charge(models.Model):    
 
     name=models.CharField(max_length=30)
     value=models.IntegerField()    
-    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,related_name="charge")
+    user=models.ManyToManyField(User,related_name="charge")
     pocket=models.ForeignKey(Pocket,on_delete=models.CASCADE,null=True)
     date=models.DateTimeField(default=timezone.now)
 
