@@ -1,3 +1,4 @@
+from email.policy import default
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -56,28 +57,27 @@ class PocketForm(forms.ModelForm):
         }
 
 
-
 class PaymentForm(forms.ModelForm):
 
-    value=forms.IntegerField(required=True,label='Value of payment',)
+    value=forms.IntegerField(required=True,label='Value of payment',max_value=1000000)
 
     class Meta:
         model = Payment
-        fields= ['value','pocket']
-        widgets={'pocket':forms.Select(attrs={'class':'form-select'})}
+        fields= ['value']
+        # widgets={'pocket':forms.Select(attrs={'class':'form-select'})}
 
 
 class ChargeForm(forms.ModelForm):
 
     name=forms.CharField(max_length=15,required=True,label='Name of charge',)
-    value=forms.IntegerField(required=True,label='Value of charge',)
+    value=forms.IntegerField(required=True,label='Value of charge',max_value=1000000)
 
     class Meta:
         model = Charge
-        fields= ['name','value','user','pocket']
+        fields= ['name','value','user']
         widgets={
 
-            'pocket':forms.Select(attrs={'class':'form-select'}),            
+            # 'pocket':forms.Select(attrs={'class':'form-select'}),            
             'user':forms.SelectMultiple(attrs={'class':'form-select'}),
 
         }

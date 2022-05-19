@@ -1,4 +1,3 @@
-
 from django.shortcuts import render,redirect, get_object_or_404
 from .models import *
 from .forms import ChargeForm, PocketForm, NewUserForm,PaymentForm
@@ -93,27 +92,32 @@ def pocket(request):
                 form.save_m2m()
                 messages.success(request,'Pocket Created')
                 return redirect('split:feed')
+            else:
+                messages.error(request,"Please insert valid information")
         else:        
-            form=PocketForm()
+            form=PocketForm()            
         return render(request,'split/pocket.html', {'pocket_form':form}) 
         
     else:
         return redirect("split:homepage")
 
 
-def payment(request):
+def payment(request,pocket_id):
 
     if request.user.is_authenticated:
 
+        pocket_name=get_object_or_404(Pocket,pk=pocket_id)        
         current_user=get_object_or_404(User,pk=request.user.pk)
         if request.method == 'POST':
             form = PaymentForm(request.POST)
             if form.is_valid():
                 payment=form.save(commit=False)
                 payment.user = current_user
+                payment.pocket=pocket_name
                 payment.save()
                 messages.success(request,'Payment Created')
-                return redirect('split:feed')
+                return redirect('split:show-pocket',pocket_id=pocket_id )
+            else: messages.error(request,"Please insert valid information")
         else:        
             form=PaymentForm()
         return render(request,'split/payment.html', {'payment_form':form}) 
@@ -122,21 +126,24 @@ def payment(request):
         return redirect("split:homepage")
 
 
-def charge(request):
+def charge(request,pocket_id):
 
     if request.user.is_authenticated:
 
-        
+        pocket_name=get_object_or_404(Pocket,pk=pocket_id)        
         if request.method == 'POST':
             form = ChargeForm(request.POST)
             if form.is_valid():
                 charge=form.save(commit=False)
+                charge.pocket=pocket_name
                 charge.save()
                 form.save_m2m()
                 messages.success(request,'Charge created')
-                return redirect('split:feed')
+                return redirect('split:show-pocket',pocket_id=pocket_id )
+            else:
+                messages.error(request,"Please insert valid information")
         else:        
-            form=ChargeForm()
+            form=ChargeForm()            
         return render(request,'split/charge.html', {'charge_form':form}) 
         
     else:
@@ -186,6 +193,21 @@ def show_pocket(request,pocket_id):
 
         your_part=sum(final.values()) 
 
+        list_value_payments= Payment.objects.filter(pocket_id=pocket_id).filter(user__in=[request.user.pk]).values_list('value')
+        
+        list_final_value_payments=[]
+        for values in list_value_payments:
+            for finalvalues in values:
+                list_final_value_payments.append(finalvalues)
+
+        your_payment=sum(list_final_value_payments)
+        your_debt=your_part-your_payment
+
+
+        list_payments= Payment.objects.filter(pocket_id=pocket_id).filter(user__in=[request.user.pk])
+
+
+
         context={
 
             'pockets':pockets,
@@ -197,6 +219,9 @@ def show_pocket(request,pocket_id):
             'lista':lista,
             'final':final,
             'yourpart': your_part,
+            'your_payment':your_payment,
+            'your_debt':your_debt,
+            'list_payments':list_payments,
             
 
         }  
@@ -206,21 +231,26 @@ def show_pocket(request,pocket_id):
 
         return redirect("split:homepage")
 
-def update_charge(request,charge_id):  
+
+def update_charge(request,charge_id,pocket_id):  
 
     if request.user.is_authenticated:
         
         charges=Charge.objects.get(pk=charge_id)
         form=ChargeForm(request.POST or None,instance=charges)
         if form.is_valid():
+
             form.save()
-            return redirect('split:feed')
+            messages.success(request,("Charge updated!"))
+            return redirect('split:show-pocket',pocket_id=pocket_id)
+            
         return render(request,'split/update_charge.html',{'charge':charges,'form':form})
     else:
 
         return redirect("split:homepage")
     
-def delete_charge(request, charge_id):
+
+def delete_charge(request, charge_id,pocket_id):
 
     if request.user.is_authenticated:
         
@@ -228,8 +258,8 @@ def delete_charge(request, charge_id):
         print(charges.user)
         if request.user in charges.user.all():
             charges.delete()
-            messages.success(request,("Charges deleted!"))                
-            return redirect('split:feed')
+            messages.success(request,("Charge deleted!"))                
+            return redirect('split:show-pocket',pocket_id=pocket_id )
         else:
             messages.success(request,("You aren't Autorized to delete this charge"))
             return redirect('split:homepage')
@@ -237,6 +267,59 @@ def delete_charge(request, charge_id):
     else:
         return redirect("split:homepage")
 
+
+def delete_pocket(request,pocket_id):
+
+    if request.user.is_authenticated:
+        
+        pocket=Pocket.objects.get(pk=pocket_id)
+        print(pocket.user)
+        if request.user == pocket.author:
+            pocket.delete()
+            messages.success(request,("pocket deleted!"))                
+            return redirect('split:feed')
+        else:
+            messages.success(request,("You aren't Autorized to delete this charge"))
+            return redirect('split:feed')
+        
+    else:
+        return redirect("split:homepage")
+
+
+def update_payment(request,payment_id,pocket_id):  
+
+    if request.user.is_authenticated:
+        
+        payments=Payment.objects.get(pk=payment_id)
+        form=PaymentForm(request.POST or None,instance=payments)
+        if form.is_valid():
+
+            form.save()
+            messages.success(request,("payment updated!"))
+            return redirect('split:show-pocket',pocket_id=pocket_id)
+            
+        return render(request,'split/update_payment.html',{'payment':payments,'form':form})
+    else:
+
+        return redirect("split:homepage")
+
+
+def delete_payment(request, payment_id,pocket_id):
+
+    if request.user.is_authenticated:
+        
+        payments=Payment.objects.get(pk=payment_id)
+        print(payments.user)
+        if request.user == payments.user:
+            payments.delete()
+            messages.success(request,("payment deleted!"))                
+            return redirect('split:show-pocket',pocket_id=pocket_id )
+        else:
+            messages.success(request,("You aren't Autorized to delete this payment"))
+            return redirect('split:homepage')
+        
+    else:
+        return redirect("split:homepage")
 
 
 
