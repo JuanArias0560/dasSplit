@@ -17,6 +17,7 @@ urlpatterns = [
     path("show_pocket/<pocket_id>",views.show_pocket, name='show-pocket'),  
     path("update_charge/<charge_id>/<pocket_id>",views.update_charge, name="update-charge"),
     path("delete_charge/<charge_id>/<pocket_id>",views.delete_charge, name="delete-charge"),
+    path("update_pocket/<pocket_id>",views.update_pocket, name="update-pocket"),
     path("delete_pocket/<pocket_id>",views.delete_pocket, name="delete-pocket"), 
     path("update_payment/<payment_id>/<pocket_id>",views.update_payment, name="update-payment"),
     path("delete_payment/<payment_id>/<pocket_id>",views.delete_payment, name="delete-payment"),

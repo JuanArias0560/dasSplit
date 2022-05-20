@@ -33,8 +33,8 @@
                                         <div class="container">
                                             <div class="row">                                    
                                                 <div class="col-xl-4 col-sm-6 col-12">
-                                                    <div class ="card align-items-end" style="width: 16rem; background-color:rgb(0,0,0,0); border-color:rgb(0,0,0,0);">
-                                                        <a href="{% url 'split:delete-pocket' pocket.id %}"><img src={% static 'assets/delete.png' %} width="15" height="15" class="d-inline-block align-right" alt=""></a>
+                                                    <div class ="card align-items-end" style=" height:1rem; width: 16rem; background-color:rgb(0,0,0,0); border-color:rgb(0,0,0,0);">
+                                                        <span><a href="{% url 'split:update-pocket' pocket.id %}"><img src={% static 'assets/edit.png' %} width="15" height="15" class="d-inline-block align-right" alt=""></a><a href="{% url 'split:delete-pocket' pocket.id %}"><img src={% static 'assets/delete.png' %} width="15" height="15" class="d-inline-block align-right" alt=""></a></p> </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -93,7 +93,7 @@
                                     <img src="{{user.profile.image.url}}" class="rounded-circle img-fluid" style="width: 100px;" />
                                 </div>
                                 <h4 class="mb-2">{{user.username.capitalize}}</h4>
-                                <p class="text-muted mb-4">@Pro<span class="mx-2">|</span> <a href="#!">{{user.email}}</a></p>
+                                <p class=|</span> <a href="#">{{user.email}}</a></p>
                                 <a href="{% url 'split:pocket' %}" ><button type="button" class="btn btn-primary btn-sm" style="border-radius: 10px;">New pocket</button></a>
                                 
                                 
@@ -103,7 +103,7 @@
                                         <p class="text-muted mb-0">Pockets</p>
                                     </div>
                                     <div class="px-3">
-                                        <p class="mb-2 h5">8512</p>
+                                        <p class="mb-2 h5">{{num_of_users.count}}</p>
                                         <p class="text-muted mb-0">Friends</p>
                                     </div>
                                     <div>

@@ -1,7 +1,7 @@
-from email.policy import default
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator
 
 from .models import Pocket,Charge,Payment
 
@@ -59,7 +59,7 @@ class PocketForm(forms.ModelForm):
 
 class PaymentForm(forms.ModelForm):
 
-    value=forms.IntegerField(required=True,label='Value of payment',max_value=1000000)
+    value=forms.IntegerField(required=True,label='Value of payment',validators=[MaxValueValidator(1000000)])
 
     class Meta:
         model = Payment
