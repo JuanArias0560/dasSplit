@@ -171,7 +171,7 @@ def payment(request,pocket_id):
         return redirect("split:homepage")
 
 
-def charge(request,pocket_id):
+def charge(request,pocket_id):    
 
     if request.user.is_authenticated:
 
@@ -352,10 +352,48 @@ def delete_pocket(request,pocket_id):
 
 def update_payment(request,payment_id,pocket_id):  
 
+    list_value= Charge.objects.filter(pocket_id=pocket_id).filter(user__in=[request.user.pk]).values_list('value') # filtra y da una lista de los valores de los charges del pocket y el usuario logeado se encuentra en la lista de usuarios
+    list_name=Charge.objects.filter(pocket_id=pocket_id).filter(user__in=[request.user.pk]).values_list('name') # filtra y da una lista de los nombres de los charges del pocket y el usuario logeado se encuentra en la lista de usuarios
+    
+    list_final_value=[]
+    list_final_name=[]
+    for name in list_name:                   #Extrae los nombres de los charge segun el pocket y cuando el usuario logeado se encuentre en la lista de usuarios y los agrega a una nueva lista
+        for finalname in name:
+            list_final_name.append(finalname)
+
+    count_user_list=[]
+    for i in list_final_name:               # de la lista de los nombre de charge extrae el numero de usuarios por charge
+        count_user=Charge.objects.filter(name=i).values_list("user")
+        count_user_list.append(len(count_user)) 
+
+    i=0   
+    for value in list_value:                # Extrae de la lista de valores  el valor de cada charge y lo divide en la cantidad de usuarios y lo envia a una lista
+        for finalvalue in value:
+            
+            finalvalue=(int(finalvalue))//((count_user_list[i]))
+            # print(count_user_list[i])
+            list_final_value.append(finalvalue)    
+            i=i+1
+    
+    final=dict(zip(list_final_name,list_final_value))
+
+    your_part=sum(final.values()) #suma los valores del diccionario
+
+    list_value_payments= Payment.objects.filter(pocket_id=pocket_id).filter(user__in=[request.user.pk]).values_list('value') # toma los valores de de los payments asociados al pocket donde el usuario logeado se se encuentre en la lista de usuarios
+    
+    list_final_value_payments=[]           # extrae los valores en un formato valido
+    for values in list_value_payments:
+        for finalvalues in values:
+            list_final_value_payments.append(finalvalues)
+    your_payment=sum(list_final_value_payments)    # suma los valores del payment
+    your_debt=your_part               # resta el total de la deuda del usuario con la deuda del pago.
+
+
     if request.user.is_authenticated:
         
         payments=Payment.objects.get(pk=payment_id)
         form=PaymentForm(request.POST or None,instance=payments)
+        form.fields['value'].validators.append(validators.MaxValueValidator(your_debt))
         if form.is_valid():
 
             form.save()
