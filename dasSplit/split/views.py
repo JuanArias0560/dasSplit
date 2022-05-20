@@ -81,6 +81,18 @@ def feed(request):
         return redirect("split:homepage")
 
 
+def  myprofile(request):
+
+    if request.user.is_authenticated:
+
+        pockets=Pocket.objects.filter(user__in=[request.user.pk])
+        num_of_users=User.objects.all()
+        return render(request,'split/my_profile.html',{'pockets':pockets,'num_of_users':num_of_users})
+
+    else:
+        return redirect("split:homepage")
+
+
 def pocket(request):
 
     if request.user.is_authenticated:

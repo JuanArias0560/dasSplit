@@ -3,11 +3,13 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 app_name="split"
 
 urlpatterns = [
     path("", views.homepage, name="homepage"),
     path("feed/",views.feed, name="feed"),
+    path("myprofile/",views.myprofile, name="profile"),
     path("pockets/",views.pocket, name="pocket"),
     path("payments/<pocket_id>",views.payment, name="payment"),
     path("charges/<pocket_id>",views.charge, name="charge"),
